@@ -18,6 +18,7 @@ public:
     ~TrieNode();
     void insert(const string &token, int i, size_t position = 0);
     int tfsearchword(int i, string word, int position);
+    int dfsearchword(const string &word, size_t position = 0);
 };
 
 #endif

@@ -16,5 +16,6 @@ class Listnode {
        ~Listnode();
        void add(int doc_id);
        int getCount(int doc_id);
+       int getDocumentCount();
 };
 #endif

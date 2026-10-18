@@ -8,7 +8,7 @@
 using namespace std;
 
 void search(const string &token, TrieNode *trienode, Map *map, int k);
-void df(TrieNode *trienode);
+void df(const string &token, TrieNode *trienode);
 int tf(const string &token, TrieNode *trienode);
 
 #endif

@@ -30,6 +30,15 @@ void TrieNode::insert(const string &token, int doc_id, size_t position) {
     }
 }
 
+int TrieNode::dfsearchword(const string &word, size_t position) {
+    if (word.empty() || position >= word.size()) return 0;
+    if (value != word[position])
+        return sibling == nullptr ? 0 : sibling->dfsearchword(word, position);
+    if (position + 1 == word.size())
+        return list == nullptr ? 0 : list->getDocumentCount();
+    return child == nullptr ? 0 : child->dfsearchword(word, position + 1);
+}
+
 int TrieNode::tfsearchword(int i, string word, int position) {
     if (word.empty() || position >= (int)word.size()) return 0;
 

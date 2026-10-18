@@ -11,8 +11,8 @@ int inputmanage(const string &input, TrieNode *trienode, Map *map, int k) {
     cmd.erase(last+1);
     if (cmd.rfind("/search", 0) == 0) {
         search(cmd, trienode, map, k);
-    } else if (cmd == "/df") {
-        df(trienode);
+    } else if (cmd.rfind("/df", 0) == 0) {
+        df(cmd, trienode);
     } else if (cmd.rfind("/tf", 0) == 0) {
         return tf(cmd, trienode);
     } else if (cmd == "/exit") {

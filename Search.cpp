@@ -7,8 +7,15 @@ using namespace std;
 void search(const string &, TrieNode *, Map *, int) {
 }
 
-void df(TrieNode *trienode) {
+void df(const string &token, TrieNode *trienode) {
+    istringstream input(token);
+    string command, term, extra;
+    if (!(input >> command >> term) || input >> extra || command != "/df") {
+        cout << "Invalid /df command: expected /df <string>\n";
+        return;
+    }
 
+    cout << term << " " << trienode->dfsearchword(term) << endl;
 }
 
 string trimSpace(string s) {

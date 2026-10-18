@@ -23,3 +23,9 @@ int Listnode::getCount(int doc_id) {
     }
     return 0;
 }
+
+int Listnode::getDocumentCount(){
+    int count = 0;
+    for (const Listnode *node = this; node != NULL; node = node->next) ++count;
+    return count;
+}
