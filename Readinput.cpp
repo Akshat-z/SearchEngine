@@ -1,5 +1,6 @@
 #include "Readinput.h"
 #include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -25,11 +26,12 @@ int read_size(int *linecounter, int *maxlength, const string &filename) {
 }
 
 static void split(const string &text, int id, TrieNode *trienode, Map *map) {
-    cout<<"text: "<<text<<" "<<id<<endl;
     istringstream words(text);
     string token;
     int count = 0;
     while (words >> token) {
+        for (size_t j = 0; j < token.size(); ++j)
+            token[j] = static_cast<char>(tolower(static_cast<unsigned char>(token[j])));
         trienode->insert(token, id);
         ++count;
     }

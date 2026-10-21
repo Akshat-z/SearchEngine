@@ -1,4 +1,5 @@
 #include "Trienode.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -18,11 +19,8 @@ void TrieNode::insert(const string &token, int doc_id, size_t position) {
             child->insert(token, doc_id, position + 1);
         }
         if (token.size()-1 == position) {
-            cout<<"Add to list "<<token<<endl;
-            if (list == NULL) {
-                list = new Listnode(doc_id);
-            }
-            list->add(doc_id);
+            if (!postings.empty() && postings.back().doc == doc_id) ++postings.back().tf;
+            else postings.push_back({doc_id, 1});
         }
     } else {
         if (sibling == nullptr) sibling = new TrieNode();
@@ -35,14 +33,12 @@ int TrieNode::dfsearchword(const string &word, size_t position) {
     if (value != word[position])
         return sibling == nullptr ? 0 : sibling->dfsearchword(word, position);
     if (position + 1 == word.size())
-        return list == nullptr ? 0 : list->getDocumentCount();
+        return static_cast<int>(postings.size());
     return child == nullptr ? 0 : child->dfsearchword(word, position + 1);
 }
 
 int TrieNode::tfsearchword(int i, string word, int position) {
     if (word.empty() || position >= (int)word.size()) return 0;
-
-    cout << "Looking for " << word[position] << ", checking " << value << endl;
 
     if (value != word[position]) {
         if (sibling == nullptr) {
@@ -53,7 +49,9 @@ int TrieNode::tfsearchword(int i, string word, int position) {
     }
 
     if (position == (int)word.size() - 1) {
-        return list->getCount(i);
+        vector<Posting>::const_iterator it = lower_bound(postings.begin(), postings.end(), i,
+            [](const Posting &p, int doc) { return p.doc < doc; });
+        return it != postings.end() && it->doc == i ? it->tf : 0;
     }
 
     if (child == nullptr) {

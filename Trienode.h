@@ -4,14 +4,16 @@
 #include <string>
 #include<vector>
 #include<iostream>
-#include "Listnode.h"
 
 using namespace std;
+
+// posting list entry (inverted index): doc id and term count in that doc
+struct Posting { int doc; int tf; };
 
 class TrieNode {
     TrieNode *sibling;
     TrieNode *child;
-    Listnode *list;
+    vector<Posting> postings; // sorted by doc id, since docs are inserted in order
     char value;
 public:
     TrieNode();

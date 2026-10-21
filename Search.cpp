@@ -1,5 +1,7 @@
 #include "Search.h"
 #include <iostream>
+#include <algorithm>
+#include <cctype>
 #include <sstream>
 
 using namespace std;
@@ -15,18 +17,8 @@ void df(const string &token, TrieNode *trienode) {
         return;
     }
 
+    for (size_t j = 0; j < term.size(); ++j) term[j] = static_cast<char>(tolower(static_cast<unsigned char>(term[j])));
     cout << term << " " << trienode->dfsearchword(term) << endl;
-}
-
-string trimSpace(string s) {
-    int st = 0, ed = s.size()-1;
-    while(st < ed && s[st]== ' '){
-        st++;
-    }
-    while(st<ed && s[ed]==' '){
-        ed--;
-    }
-    return s.substr(st, ed-st+1);
 }
 
 /*
@@ -51,6 +43,7 @@ int tf(const string &token, TrieNode *trienode) {
         cout << "Invalid /tf command: expected /tf <int> <string>\n";
         return -1;
     }
+    for (size_t j = 0; j < term.size(); ++j) term[j] = static_cast<char>(tolower(static_cast<unsigned char>(term[j])));
     cout<<number<< " "<< term << " "<< trienode->tfsearchword(value, term, 0) <<endl;
     return 0;
 }
