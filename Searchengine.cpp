@@ -40,6 +40,7 @@ int main(int argc, char **argv) {
     Map map(linecounter, maxlength);
     TrieNode trienode;
     if (read_input(&map, &trienode, filename) == -1) return 1;
+    // trienode.printFullTree();
     cout << "Database Ready" << endl;
 
     string input;

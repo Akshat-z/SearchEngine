@@ -47,7 +47,6 @@ int TrieNode::tfsearchword(int i, string word, int position) {
         }
         return sibling->tfsearchword(i, word, position);
     }
-
     if (position == (int)word.size() - 1) {
         vector<Posting>::const_iterator it = lower_bound(postings.begin(), postings.end(), i,
             [](const Posting &p, int doc) { return p.doc < doc; });
@@ -59,4 +58,35 @@ int TrieNode::tfsearchword(int i, string word, int position) {
         return 0;
     }
     return child->tfsearchword(i, word, position + 1);
+}
+
+const vector<Posting> *TrieNode::getPostings(const string &word) const {
+    const TrieNode *node = this;
+    for (size_t pos = 0; pos < word.size(); ++pos) {
+        while (node != nullptr && node->value != word[pos]) node = node->sibling;
+        if (node == nullptr) return nullptr;
+        if (pos + 1 == word.size()) return node->postings.empty() ? nullptr : &node->postings;
+        node = node->child;
+    }
+    return nullptr;
+}
+
+
+void TrieNode::printFullTree(const string &prefix) const {
+    // go through this letter and all its siblings; recurse into each child
+    const TrieNode *node = this;
+    while (node != nullptr) {
+        if (node->value != -1) { // -1 is the empty root of an empty trie
+            const string word = prefix + node->value;
+            if (!node->postings.empty()) {
+                cout << word << ":";
+                for (size_t i = 0; i < node->postings.size(); ++i)
+                    cout << " (doc " << node->postings[i].doc << ", tf " << node->postings[i].tf << ")";
+                cout << endl;
+            }
+            if (node->child != nullptr) node->child->printFullTree(word);
+        }
+        cout<<"prefix: "<<prefix<<"\n";
+        node = node->sibling;
+    }
 }

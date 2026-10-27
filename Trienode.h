@@ -20,7 +20,9 @@ public:
     ~TrieNode();
     void insert(const string &token, int i, size_t position = 0);
     int tfsearchword(int i, string word, int position);
+    const vector<Posting> *getPostings(const string &word) const; 
     int dfsearchword(const string &word, size_t position = 0);
+    void printFullTree(const string &prefix = "") const; // prints every word with its postings
 };
 
 #endif
